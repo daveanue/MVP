@@ -1,22 +1,26 @@
 import React, {useEffect} from 'react';
-import {StyleSheet, Text, View, Modal, Image, Button} from 'react-native';
+import {StyleSheet, Text, View, Modal, Image, Button, ScrollView} from 'react-native';
 
- const PokeModal = ({pokemon}) => {
-  console.log('what is pokemon', pokemon);
+ const PokeModal = ({pokemon, pokeKey}) => {
+  // console.log('what is pokemon', pokemon);
+  // console.log('what is poke key', pokeKey);
       return (
-    <Modal style={styles.centeredView}>
-      <View style={styles.modalCard}>
-        <Image style={styles.modalImage} source={{uri: pokemon.sprites.versions["generation-v"]["black-white"].animated.front_default}} />
+
+    <View style={styles.centeredView}>
+      {pokeKey.map((key) => {
+        return (
+          <View style={styles.modalCard}>
+        <Image style={styles.modalImage} source={{uri: pokemon[key].sprites.versions["generation-v"]["black-white"].animated.front_default}} />
         <View style={styles.modalInfo}>
           <View style={styles.modalTypes}>
             <Text style={styles.infoTitle}>
-              {pokemon.name[0].toUpperCase() + pokemon.name.slice(1)}
+              {pokemon[key].name[0].toUpperCase() + pokemon[key].name.slice(1)}
             </Text>
-            {pokemon.types.map((typeObj, i2) => {
+            {pokemon[key].types.map((typeObj, i2) => {
               return (
                 <Text key={i2} style={styles.modalType}>
                   {
-                  i2 === pokemon.types.length - 1
+                  i2 === pokemon[key].types.length - 1
                    ? typeObj.type.name
                    : typeObj.type.name + '/'
                   }
@@ -24,7 +28,7 @@ import {StyleSheet, Text, View, Modal, Image, Button} from 'react-native';
               );
             })}
             </View>
-              {pokemon.abilities.map((abilityObj, i) => {
+              {pokemon[key].abilities.map((abilityObj, i) => {
                 return (
                   <Text style={styles.abilityLine} key={i}>
                     {abilityObj.ability.name}
@@ -33,7 +37,10 @@ import {StyleSheet, Text, View, Modal, Image, Button} from 'react-native';
               })}
         </View>
       </View>
-    </Modal>
+        )
+      })}
+
+    </View>
    )
  }
 
@@ -41,19 +48,23 @@ import {StyleSheet, Text, View, Modal, Image, Button} from 'react-native';
 
 
 const styles = StyleSheet.create({
+  centeredView: {
+    height: '100%',
+    width: '100%',
+    flexDirection: 'row',
+    flexWrap: 'wrap'
+  },
   modalCard: {
-    flex: 1,
+    flexBasis: '33%',
     justifyContent: 'center',
     alignItems: 'center',
   },
   modalImage: {
-    flex: 3,
     width: 100,
     height: 100,
     resizeMode: 'contain',
   },
   modalInfo: {
-    flex: 3,
   },
   infoTitle: {
     paddingTop: 10,
@@ -61,7 +72,6 @@ const styles = StyleSheet.create({
     color: 'red',
   },
   modalClose: {
-    flex: 1,
   },
 });
 

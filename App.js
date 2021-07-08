@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import api from './api/api.js'
 import PokeModal from './Components/PokeModal.js';
 import "regenerator-runtime/runtime";
@@ -10,24 +10,22 @@ export default class App extends React.Component {
     this.state = {
       pokemonMap: null,
       pokemonIndex: null,
-      showModal: true
+      showModal: true,
+      pokeKey: null
     }
   }
 
   componentDidMount() {
     var pokemonMap = {};
     var pokemonIndex = {};
-
     api.getKantoPokemon()
     .then((result) => {
       // console.log('result', result.data.results);
       return result.data.results;
     })
     .then((pokeUrlList) => {
-
       var allPokemon = pokeUrlList.map(pokemon => {
        return api.getOnePokemon(pokemon.name)
-
       })
       Promise.all(allPokemon)
       .then((result) => {
@@ -36,11 +34,10 @@ export default class App extends React.Component {
             pokemonMap[JSON.stringify(result[i].data.id)] = result[i].data
             pokemonIndex[result[i].data.name] = result[i].data.id
           }
-          this.setState({pokemonMap:pokemonMap, pokemonIndex:pokemonIndex});
-
+          // console.log('keys', Object.keys(pokemonMap))
+          const pokeKey = Object.keys(pokemonMap);
+          this.setState({pokemonMap:pokemonMap, pokemonIndex:pokemonIndex, pokeKey:pokeKey});
       })
-
-
     })
     .catch((err) => {
       console.log(err);
@@ -49,28 +46,26 @@ export default class App extends React.Component {
 
 render() {
   console.log('this.state.pokemonMap', this.state.pokemonMap);
-
   return (
-
-
+ <ScrollView style={{backgroundColor: 'red', marginHorizontal: 20}}>
+  <View style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
     <View style={styles.app}>
-      <Text>Hello React Native! 1</Text>
-      <StatusBar style="auto" />
       {this.state.pokemonMap && <PokeModal
-        pokemon={this.state.pokemonMap["1"]}
+        pokemon={this.state.pokemonMap}
+        pokeKey={this.state.pokeKey}
       />
       }
     </View>
+  </View>
+  </ScrollView>
   );
  }
 }
 
 const styles = StyleSheet.create({
   app: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'white',
+    width: '100%',
+    backgroundColor: 'white'
   }
 });
 
