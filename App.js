@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import api from './api/api.js'
-import PokeModal from './Components/PokeModal.js';
+import PokeView from './Components/PokeView.js';
 import "regenerator-runtime/runtime";
 export default class App extends React.Component {
   constructor() {
@@ -50,7 +50,7 @@ render() {
  <ScrollView style={{backgroundColor: 'red', marginHorizontal: 20}}>
   <View style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
     <View style={styles.app}>
-      {this.state.pokemonMap && <PokeModal
+      {this.state.pokemonMap && <PokeView
         pokemon={this.state.pokemonMap}
         pokeKey={this.state.pokeKey}
       />

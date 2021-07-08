@@ -1,16 +1,41 @@
-import React, {useEffect} from 'react';
-import {StyleSheet, Text, View, Modal, Image, Button, ScrollView} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, Text, View, Modal, Image, Button, ScrollView, Pressable} from 'react-native';
 
- const PokeModal = ({pokemon, pokeKey}) => {
-  // console.log('what is pokemon', pokemon);
+ const PokeView = ({pokemon, pokeKey}) => {
+  console.log('what is pokemon', pokemon);
   // console.log('what is poke key', pokeKey);
+  const[modalVisible, setModalVisible] = useState(false);
       return (
-
     <View style={styles.centeredView}>
       {pokeKey.map((key) => {
         return (
           <View style={styles.modalCard}>
+
+          <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.centeredViews}>
+          <View style={styles.modalViews}>
+            <Text style={styles.modalTexts}>Hello World!</Text>
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => setModalVisible(!modalVisible)}
+            >
+              <Text style={styles.textStyle}>Hide Modal</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+
+          <Pressable onPress={()=> setModalVisible(true)}>
         <Image style={styles.modalImage} source={{uri: pokemon[key].sprites.versions["generation-v"]["black-white"].animated.front_default}} />
+        </Pressable>
         <View style={styles.modalInfo}>
           <View style={styles.modalTypes}>
             <Text style={styles.infoTitle}>
@@ -39,7 +64,6 @@ import {StyleSheet, Text, View, Modal, Image, Button, ScrollView} from 'react-na
       </View>
         )
       })}
-
     </View>
    )
  }
@@ -73,9 +97,40 @@ const styles = StyleSheet.create({
   },
   modalClose: {
   },
+
+  centeredViews: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22
+  },
+  modalViews: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+  modalTexts: {
+    marginBottom: 15,
+    textAlign: "center"
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center"
+  }
 });
 
 
-export default PokeModal;
+export default PokeView;
 
 
