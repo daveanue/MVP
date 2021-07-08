@@ -10,7 +10,7 @@ app.use('/', (req, res) => {
   getPokemonData('bulbasaur').then((resp) => {
     // console.log('data', resp.data);
     console.log('pic', resp.data.sprites.versions['generation-v']);
-    // res.status(200).send(resp);
+    // res.status(200).send(resp)
   }).catch((err) => {
     res.status(404).send(err);
   });
