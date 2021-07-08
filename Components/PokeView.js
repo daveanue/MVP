@@ -2,14 +2,14 @@ import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View, Modal, Image, Button, ScrollView, Pressable} from 'react-native';
 
  const PokeView = ({pokemon, pokeKey}) => {
-  console.log('what is pokemon', pokemon);
+  // console.log('what is pokemon', pokemon);
   // console.log('what is poke key', pokeKey);
   const[modalVisible, setModalVisible] = useState(false);
       return (
     <View style={styles.centeredView}>
       {pokeKey.map((key) => {
         return (
-          <View style={styles.modalCard}>
+          <View key={key} style={styles.modalCard}>
 
           <Modal
         animationType="slide"
@@ -22,12 +22,22 @@ import {StyleSheet, Text, View, Modal, Image, Button, ScrollView, Pressable} fro
       >
         <View style={styles.centeredViews}>
           <View style={styles.modalViews}>
-            <Text style={styles.modalTexts}>Hello World!</Text>
+            <Text style={styles.modalTexts}>Height - {pokemon[key].height * 10 + ' cm'}</Text>
+            <Text style={styles.modalTexts}>Weight - {(pokemon[key].weight / 10 * 2.2).toFixed(1) + ' lb'}</Text>
+            <Text>Abilities</Text>
+            {pokemon[key].abilities.map((abilityObj, i) => {
+                return (
+                  <Text style={styles.abilityLine} key={i}>
+                    {abilityObj.ability.name}
+                  </Text>
+                );
+              })}
             <Pressable
               style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              <Text style={styles.textStyle}>Hide Modal</Text>
+              onPress={() => setModalVisible(!modalVisible)}>
+
+              <Text style={styles.textStyle}>Close</Text>
+
             </Pressable>
           </View>
         </View>
@@ -53,13 +63,7 @@ import {StyleSheet, Text, View, Modal, Image, Button, ScrollView, Pressable} fro
               );
             })}
             </View>
-              {pokemon[key].abilities.map((abilityObj, i) => {
-                return (
-                  <Text style={styles.abilityLine} key={i}>
-                    {abilityObj.ability.name}
-                  </Text>
-                );
-              })}
+
         </View>
       </View>
         )
@@ -73,6 +77,8 @@ import {StyleSheet, Text, View, Modal, Image, Button, ScrollView, Pressable} fro
 
 const styles = StyleSheet.create({
   centeredView: {
+    flex: 1,
+    marginTop: 30,
     height: '100%',
     width: '100%',
     flexDirection: 'row',
@@ -95,7 +101,13 @@ const styles = StyleSheet.create({
     fontSize: 22,
     color: 'red',
   },
-  modalClose: {
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2
   },
 
   centeredViews: {

@@ -45,7 +45,7 @@ export default class App extends React.Component {
   }
 
 render() {
-  console.log('this.state.pokemonMap', this.state.pokemonMap);
+  // console.log('this.state.pokemonMap', this.state.pokemonMap);
   return (
  <ScrollView style={{backgroundColor: 'red', marginHorizontal: 20}}>
   <View style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
