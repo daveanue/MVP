@@ -1,49 +1,33 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View, Modal, Image, Button, ScrollView, Pressable} from 'react-native';
-
+import PokeModal from './PokeModal.js';
  const PokeView = ({pokemon, pokeKey}) => {
   // console.log('what is pokemon', pokemon);
   // console.log('what is poke key', pokeKey);
   const[modalVisible, setModalVisible] = useState(false);
+  const[pokeName, setpokeName] = useState(null);
+  const[pokeHeight, setpokeHeight] = useState(null);
+  const[pokeWeight, setpokeWeight] = useState(null);
+  const[pokeAbility, setpokeAbility] = useState(null);
+
       return (
     <View style={styles.centeredView}>
+
+
       {pokeKey.map((key) => {
         return (
           <View key={key} style={styles.modalCard}>
 
-          <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <View style={styles.centeredViews}>
-          <View style={styles.modalViews}>
-            <Text style={styles.modalTexts}>Height - {pokemon[key].height * 10 + ' cm'}</Text>
-            <Text style={styles.modalTexts}>Weight - {(pokemon[key].weight / 10 * 2.2).toFixed(1) + ' lb'}</Text>
-            <Text>Abilities</Text>
-            {pokemon[key].abilities.map((abilityObj, i) => {
-                return (
-                  <Text style={styles.abilityLine} key={i}>
-                    {abilityObj.ability.name}
-                  </Text>
-                );
-              })}
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}>
+          {pokeName && <PokeModal pokeHeight={pokeHeight} pokeWeight={pokeWeight} pokeAbility={pokeAbility} pokeName={pokeName} modalVisible={modalVisible} closeModal={() => {setModalVisible(prev => !prev)}} /> }
+          {/* <Pressable onPress={()=> setModalVisible(true), () => setpokeHeight(pokemon[key].height), ()=> setpokeName(pokemon[key].name)}> */}
 
-              <Text style={styles.textStyle}>Close</Text>
-
-            </Pressable>
-          </View>
-        </View>
-      </Modal>
-
-          <Pressable onPress={()=> setModalVisible(true)}>
+          <Pressable onPress={()=> {
+            setModalVisible(true)
+            setpokeHeight(pokemon[key].height * 10)
+            setpokeName(pokemon[key].name)
+            setpokeWeight(pokemon[key].weight / 10 * 2.2)
+            setpokeAbility(pokemon[key].abilities)
+          }}>
         <Image style={styles.modalImage} source={{uri: pokemon[key].sprites.versions["generation-v"]["black-white"].animated.front_default}} />
         </Pressable>
         <View style={styles.modalInfo}>
@@ -85,6 +69,13 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap'
   },
   modalCard: {
+    flexBasis: '33%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalCardwithBorder: {
+    borderWidth: 4,
+    borderColor: "#20232a",
     flexBasis: '33%',
     justifyContent: 'center',
     alignItems: 'center',
